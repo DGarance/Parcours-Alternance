@@ -240,20 +240,33 @@ sudo systemctl restart apache2
 
 ## Finalisation via l'interface web
 
-1. Ouvrez `http://<IP_du_serveur>` (ou `http://glpi.local` si configuré)`
-   ![Sélection de la langue](assets/glpi_interface_web.png)
-2. Sélectionnez votre langue, acceptez la licence GPLv3 ![Sélection de la langue](assets/glpi_langue.png)
-3. Choisissez **Installation** (et non mise à jour), vérifiez les prérequis
-   ![Sélection de la langue](assets/glpi-setup-lang.png)
-4. Renseignez la connexion à la base de données (hôte, utilisateur, mot de passe)
-   ![Sélection de la langue](assets/glpi-setup-lang.png)
-5. Sélectionnez la base `glpi_db` et laissez GLPI initialiser les tables
-   ![Sélection de la langue](assets/glpi-setup-lang.png)
-6. Identifiants par défaut fournis en fin d'installation : | Rôle | Identifiant | Mot de passe | |---|---|---| | Super
-   Admin | `glpi` | `glpi` | | Tech | `tech` | `tech` | | Normal User | `normal` | `normal` | | Post-only | `post-only`
-   | `post-only` |
+1. Ouvrez `http://<IP_du_serveur>` (ou `http://glpi.local` si configuré)`, sélectionnez votre langue
+![Sélection de la langue](assets/glpi_langue.png)
+
+2. Acceptez la licence GPLv3 
+![Licence GPLv3](assets/glpi_licence.png)
+3. Choisissez **Installation** (et non mise à jour)
+![Choix installation ou mise à jour](assets/glpi_installation.png)
+4. Vérifiez que tous les prérequis sont satisfaists (indicateurs verts)
+![Prérequis](assets/glpi_prerequis.png)  
+5. Renseignez la connexion à la base de données (hôte, utilisateur, mot de passe)
+   ![Connexion base de données](assets/glpi_database_connexion.png)
+6. Sélectionnez la base `glpi_db` et laissez GLPI initialiser les tables
+   ![Sélection de la langue](assets/glpi_database_choice.png)
+7. Identifiants par défaut fournis en fin d'installation :
+![Sélection de la langue](assets/glpi_identifiants_defaut.png)
+
+| Rôle | Identifiant | Mot de passe |
+|---|---|---|
+| SuperAdmin | `glpi` | `glpi` |
+| Tech | `tech` | `tech` | 
+| Normal User | `normal` | `normal` | 
+| Post-only | `post-only`| `post-only` |
 
 > **Sécurité critique** : changez immédiatement ces mots de passe par défaut après la première connexion.
+
+8. Connectez-vous à l'interface
+![Sélection de la langue](assets/glpi_connexion.png)
 
 ## Bonnes pratiques post-installation
 
