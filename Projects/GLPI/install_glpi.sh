@@ -15,19 +15,18 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Variables — valeurs par défaut modifiables ci-dessous ou via variables d'environnement
-DB_NAME="${GLPI_DB_NAME:-glpi_db}"
-DB_USER="${GLPI_DB_USER:-glpi_user}"
-GLPI_DOMAIN="${GLPI_DOMAIN:-glpi.local}"
+# Variables — valeurs par défaut modifiables ci-dessous
+DB_NAME="glpi_db"
+DB_USER="glpi_user"
+GLPI_DOMAIN="glpi.local"
 TMP_DIR="/tmp"
 
-# Mot de passe MySQL : jamais en dur dans le script.
-# S'il n'est pas défini via GLPI_DB_PASS, on le demande à l'exécution.
-if [ -z "$GLPI_DB_PASS" ]; then
-    read -s -p "Mot de passe MySQL pour $DB_USER : " GLPI_DB_PASS
-    echo
-fi
-MYSQL_PASS="$GLPI_DB_PASS"
+# Détection automatique de l'IP du serveur
+DETECTED_IP=$(hostname -I | awk '{print $1}')
+
+# Demande des informations sensibles / spécifiques à l'environnement
+read -sp "Entrez le mot de passe MySQL pour l'utilisateur $DB_USER : " MYSQL_PASS
+echo 
 
 echo "[INFO] Configuration automatique de l'installation de GLPI"
 echo "[INFO] Domaine GLPI : $GLPI_DOMAIN"
@@ -47,18 +46,16 @@ function update_system(){
         exit 1
     fi
     echo "[INFO] Installation des dépendances..."
-    if apt-get install -y apache2 mariadb-server php php-{xml,curl,gd,intl,mysql,bcmath,mbstring,bz2,zip,ldap}; then
+    if apt-get install -y apache2 mariadb-server php curl php-{xml,curl,gd,intl,mysql,bcmath,mbstring,bz2,zip,ldap}; then
         echo "[OK] Dépendances installées."
     else
         echo "[ERREUR] Echec de l'installation des paquets."
         exit 1
-    fi
-}
-
+    f
 # Fonction : Sécurisation de MariaDB
 function secure_mariaDB(){
     echo "[INFO] Sécurisation de MariaDB..."
-    if mysql_secure_installation <<EOF
+    if mariadb-secure-installation <<EOF
 Y
 Y
 $MYSQL_PASS

@@ -12,9 +12,9 @@ et gestion des contrats.
 - [Environnement Cible](#environnement-cible)
 - [Prérequis](#prérequis)
 - [Installation rapide (script automatisé)](#installation-rapide-script-automatisé)
-- [Installation manuelle](#installation-manuelle)
-- [Finalisation via l'interface web](#environnement-cible)
-- [Bonnes pratiques post-installation](#finalisation-via-linterface-web)
+- [Installation fonctionnelle](#installation-fonctionnelle)
+- [Finalisation via l'interface web](#finalisation-via-linterface-web)
+- [Bonnes pratiques post-installation](#bonnes-pratiques-post-installation)
 - [Résolution des problèmes courants](#résolution-des-problèmes-courants)
 - [Mise à jour](#mise-à-jour)
 
@@ -49,19 +49,12 @@ Architecture des fichiers (installation avec sécurisation) :
 
 ## Installation rapide (script automatisé)
 
-Le script [`install_glpi.sh`](./install_glpi.sh) propose deux niveaux d'installation. Il attend trois variables
-d'environnement (aucun mot de passe en dur dans le script) :
+Le script [`install_glpi.sh`](./install_glpi.sh) propose deux niveaux d'installation. Le nom de la base de données, l'utilisateur et le nom de domaine sont définis directement en variables en haut du script - ouvrez le fichier et modifier les si besoin (valeurs par défaut :`glpi_db`,`glpi_user`,`glpi_local`). Le mot de passe MySQL, lui, n'est jamais en dur dans le script : il est **toujours demandé à l'exécution**
 
 ```bash
-export GLPI_DB_NAME="glpi_db"
-export GLPI_DB_USER="glpi_user"
-export GLPI_DB_PASS="votre_mot_de_passe_fort" #A modifier
-export GLPI_DOMAIN="glpi.local"
-
-sudo -E ./install_glpi.sh --auto     # installation fonctionnelle (étapes 1-5)
-sudo -E ./install_glpi.sh --auto-prod # installation + sécurisation (étapes 1-7)
-# ou
-sudo -E ./install_glpi.sh            # menu interactif (étape par étape)
+sudo  ./install_glpi.sh            # menu interactif (étape par étape)
+sudo  ./install_glpi.sh --auto     # installation fonctionnelle (étapes 1-5)
+sudo  ./install_glpi.sh --auto-prod # installation + sécurisation (étapes 1-7)
 ```
 
 Le menu interactif permet de rejouer une étape précise (mise à jour système, MariaDB, base de données, Apache, PHP, mise
@@ -86,7 +79,7 @@ sudo apt install -y apache2 mariadb-server php curl
 On installe les modules php requis pour l'utilisation optimale de GLPI.
 
 ```bash
-sudo apt install php-{xml,curl,gd,intl,mysql,bcmath,mbstring,bz2,zip,ldap}
+sudo apt install -y php-{xml,curl,gd,intl,mysql,bcmath,mbstring,bz2,zip,ldap}
 ```
 
 > Pour une version PHP spécifique (ex. 8.3), remplacez `php` par `php8.3` et adaptez les noms de modules. Avec Nginx,
@@ -150,7 +143,7 @@ sudo mysql -u root -p
 
 ```sql
 CREATE DATABASE glpi_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'glpi_user'@'localhost' IDENTIFIED BY '972130';
+CREATE USER 'glpi_user'@'localhost' IDENTIFIED BY 'mot_de_passe_fort';
 GRANT ALL PRIVILEGES ON glpi_db.* TO 'glpi_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
@@ -252,9 +245,9 @@ sudo systemctl restart apache2
 5. Renseignez la connexion à la base de données (hôte, utilisateur, mot de passe)
    ![Connexion base de données](assets/glpi_database_connexion.png)
 6. Sélectionnez la base `glpi_db` et laissez GLPI initialiser les tables
-   ![Sélection de la langue](assets/glpi_database_choice.png)
+   ![Sélection de la base de données](assets/glpi_database_choice.png)
 7. Identifiants par défaut fournis en fin d'installation :
-![Sélection de la langue](assets/glpi_identifiants_defaut.png)
+![Idenitfiants par défaut de GLPI](assets/glpi_identifiants_defaut.png)
 
 | Rôle | Identifiant | Mot de passe |
 |---|---|---|
@@ -266,7 +259,8 @@ sudo systemctl restart apache2
 > **Sécurité critique** : changez immédiatement ces mots de passe par défaut après la première connexion.
 
 8. Connectez-vous à l'interface
-![Sélection de la langue](assets/glpi_connexion.png)
+![Connexion à l'interface](assets/glpi_connexion.png)
+![Tableau de bord de GLPI](assets/glpi_tableau_de_bord.png)
 
 ## Bonnes pratiques post-installation
 
